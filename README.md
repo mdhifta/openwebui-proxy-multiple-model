@@ -25,4 +25,12 @@ Make sure you have saved your Google Cloud service account credentials in the pr
 -- docker compose up
 
 http://localhost:9090/v1
+
+# Openwebui Setup
+Admin Panel -> connetions
+<img width="1907" height="964" alt="Screenshot from 2026-07-12 11-29-56" src="https://github.com/user-attachments/assets/9911a768-3e1a-421f-b716-a9b3a6ce98db" />
+
+Admin Panel -> Models
+<img width="1907" height="964" alt="Screenshot from 2026-07-12 11-47-23" src="https://github.com/user-attachments/assets/e6f1affc-9ff5-41c9-b4d6-f901d8b89d42" />
+
 ```
