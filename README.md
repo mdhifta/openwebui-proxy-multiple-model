@@ -70,6 +70,10 @@ The OpenAI-compatible endpoint will be available at:
 ```
 http://localhost:9090/v1
 ```
+---
+# Architecture Flow Schema
+![Proxy Openwebui Acrhitecture](https://github.com/user-attachments/assets/216c1901-2439-4575-8b2a-6733e9cc1365)
+
 
 ---
 
@@ -82,3 +86,6 @@ http://localhost:9090/v1
 ## 2. Admin Panel → Models
 
 ![Open WebUI Models](https://github.com/user-attachments/assets/e6f1affc-9ff5-41c9-b4d6-f901d8b89d42)
+
+# Documentation 
+https://medium.com/@mdhiftaa/openwebui-proxy-multiple-models-b072e734385d?sharedUserId=mdhiftaa
