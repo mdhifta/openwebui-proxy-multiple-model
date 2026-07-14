@@ -16,6 +16,5 @@ WORKDIR /app
 COPY --from=builder /app/proxy-gateway /app/proxy-gateway
 COPY cerdential-gcp.json /app/cerdential-gcp.json
 
-EXPOSE 9090
 
 ENTRYPOINT ["/app/proxy-gateway"]

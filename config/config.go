@@ -6,22 +6,24 @@ import (
 	"strings"
 
 	"github.com/joho/godotenv"
+	
+	"proxy-gateway/logger"
 )
 
 type Config struct {
 	Port                    string
 	VertexAILocation        string
 	VertexAIProject         string
+	VertexAnthropicVersion  string
 	VertexAIAvailableModels []string
 	OpenAIAPIKey            string
-	GeminiAPIKey            string
 }
 
 var AppConfig *Config
 
 func LoadConfig() error {
 	if err := godotenv.Load(); err != nil {
-		fmt.Println("Warning: .env file not found, reading from system env instead")
+		logger.Logger.Debug("Warning: .env file not found, reading from system env instead")
 	}
 
 	location := os.Getenv("VERTEXAI_LOCATION")
@@ -49,8 +51,8 @@ func LoadConfig() error {
 		VertexAILocation:        location,
 		VertexAIProject:         projectID,
 		VertexAIAvailableModels: customModels,
+		VertexAnthropicVersion: os.Getenv("VERTEXAI_ANTHROPIC_VERSION"),
 		OpenAIAPIKey:            os.Getenv("OPENAI_API_KEY"),
-		GeminiAPIKey:            os.Getenv("GEMINI_API_KEY"),
 	}
 	return nil
 }

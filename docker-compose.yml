@@ -3,13 +3,14 @@ services:
     build: .
     container_name: proxy-openwebui
     ports:
-      - "9090:9090"
+       - "${PORT}:${PORT}"
     environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
       - VERTEXAI_PROJECT=${VERTEXAI_PROJECT}
       - VERTEXAI_LOCATION=${VERTEXAI_LOCATION}
-      - GOOGLE_APPLICATION_CREDENTIALS=/app/cerdential-gcp.json
+      - VERTEXAI_ANTHROPIC_VERSION=${VERTEXAI_ANTHROPIC_VERSION}
       - VERTEXAI_AVAILABLE_MODELS=${VERTEXAI_AVAILABLE_MODELS}
-      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - GOOGLE_APPLICATION_CREDENTIALS=/app/cerdential-gcp.json
     volumes:
       - ./cerdential-gcp.json:/app/cerdential-gcp.json:ro
     restart: unless-stopped

@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"encoding/json"
 	"io"
-	"log"
 	"net/http"
 	"net/url"
 	"strings"
@@ -45,13 +44,13 @@ func main() {
 	logger.InitSlogLogger()
 
 	if err := config.LoadConfig(); err != nil {
-		log.Fatalf("Initialization failed: %v", err)
+		logger.Logger.Debug("Initialization failed: %v", err)
 	}
 
 	targetURL := config.AppConfig.VertexAILocation
 	target, err := url.Parse(targetURL)
 	if err != nil {
-		log.Fatalf("Invalid upstream URL: %v", err)
+		logger.Logger.Debug("Invalid upstream URL: %v", err)
 	}
 
 	proxyEngine := proxy.NewMakeProxy(target)
@@ -63,6 +62,6 @@ func main() {
 	addr := ":" + config.AppConfig.Port
 	logger.Logger.Info("Proxy Engine online", "listen_port", config.AppConfig.Port, "upstream_target", targetURL)
 	if err := http.ListenAndServe(addr, mux); err != nil {
-		log.Fatalf("Server shutdown: %v", err)
+		logger.Logger.Debug("Server shutdown: %v", err)
 	}
 }
