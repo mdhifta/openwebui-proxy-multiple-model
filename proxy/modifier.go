@@ -4,40 +4,40 @@ import (
 	"bufio"
 	"encoding/json"
 	"io"
-	"log"
 	"net/http"
 	"strings"
 
 	"proxy-gateway/transformer"
+	"proxy-gateway/logger"
 )
 
 func HandleModifyResponse(resp *http.Response) error {
-	log.Printf("[DEBUG Modifier] Response! Status: %d, Path: %s\n", resp.StatusCode, resp.Request.URL.Path)
+	logger.Logger.Debug("Response! Status: %d, Path: %s\n", resp.StatusCode, resp.Request.URL.Path)
 
 	state, ok := resp.Request.Context().Value(ProxyStateKey).(*ProxyState)
 	if !ok {
-		log.Printf("[DEBUG Modifier] Warning: ProxyState not find in the context\n")
+		logger.Logger.Debug("Warning: ProxyState not find in the context\n")
 		state = &ProxyState{}
 	}
 
 	ct := resp.Header.Get("Content-Type")
-	log.Printf("[DEBUG Modifier] Content-Type from OpenAI: %s\n", ct)
+	logger.Logger.Debug("Content-Type from OpenAI: %s\n", ct)
 
 	if state.IsGemini3 && strings.Contains(ct, "application/json") {
 		return processGemini3Stream(resp)
 	}
 
 	if state.IsOpenAI && strings.Contains(ct, "text/event-stream") && strings.Contains(resp.Request.URL.Path, "/v1/responses") {
-		log.Printf("[DEBUG Modifier] Condition GPT-5 success, Model: %s\n", state.ModelName)
+		logger.Logger.Debug("Condition GPT-5 success, Model: %s\n", state.ModelName)
 
 		if !strings.Contains(ct, "text/event-stream") {
-			log.Printf("[DEBUG Modifier] ERROR DARI OPENAI! OpenAI tidak mengirim stream. Status: %d\n", resp.StatusCode)
+			logger.Logger.Debug("Error from OpenAI! OpenAI did not return a stream. Status: %d\n", resp.StatusCode)
 		}
 
 		return processOpenAIResponsesStream(resp, state.ModelName)
 	}
 
-	log.Printf("[DEBUG Modifier] Melewati ModifyResponse (Bypass normal)\n")
+	logger.Logger.Debug("Skipping ModifyResponse (Normal bypass)\n")
 	return nil
 }
 
@@ -72,14 +72,14 @@ func processGemini3Stream(resp *http.Response) error {
 }
 
 func processOpenAIResponsesStream(resp *http.Response, modelName string) error {
-	log.Printf("[DEBUG Stream] Start processOpenAIResponsesStream\n")
+	logger.Logger.Debug("Start process OpenAIResponses Stream\n")
 
 	originalBody := resp.Body
 	pr, pw := io.Pipe()
 	go func() {
-		log.Printf("[DEBUG Goroutine] Goroutine OpenAI running...\n")
+		logger.Logger.Debug("Goroutine OpenAI running...\n")
 		defer func() {
-			log.Printf("[DEBUG Goroutine] Goroutine done and closed\n")
+			logger.Logger.Debug("Goroutine done and closed\n")
 			pw.Close()
 			originalBody.Close()
 		}()
@@ -92,7 +92,7 @@ func processOpenAIResponsesStream(resp *http.Response, modelName string) error {
 				line := string(lineBytes)
 				line = strings.TrimRight(line, "\r\n")
 
-				log.Printf("[DEBUG Stream Input] %s\n", line)
+				logger.Logger.Debug("[Stream Input] %s\n", line)
 
 				if strings.HasPrefix(line, "data: ") && !strings.Contains(line, "[DONE]") {
 					jsonStr := strings.TrimPrefix(line, "data: ")
@@ -119,7 +119,7 @@ func processOpenAIResponsesStream(resp *http.Response, modelName string) error {
 
 			if err != nil {
 				if err != io.EOF {
-					log.Printf("[ERROR Reader] Stream disconnected or error: %v\n", err)
+					logger.Logger.Debug("Stream disconnected or error: %v\n", err)
 				}
 				break
 			}
@@ -129,5 +129,6 @@ func processOpenAIResponsesStream(resp *http.Response, modelName string) error {
 	resp.Body = pr
 	resp.Header.Set("Content-Type", "text/event-stream")
 	resp.Header.Del("Content-Encoding")
+	
 	return nil
 }

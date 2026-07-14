@@ -102,10 +102,8 @@ func HandleGeminiStream(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	responseStream := client.Models.GenerateContentStream(ctx, cleanModelName, contents, nil)
-
 	flusher, ok := w.(http.Flusher)
-
+	responseStream := client.Models.GenerateContentStream(ctx, cleanModelName, contents, nil)
 	for resp, err := range responseStream {
 		if err != nil {
 			logger.Logger.Error("GenAI SDK: Stream error", "error", err)
@@ -199,7 +197,7 @@ func HandleClaudeStream(w http.ResponseWriter, r *http.Request) {
 	}
 
 	anthropicReq := map[string]any{
-		"anthropic_version": "vertex-2023-10-16",
+		"anthropic_version": config.AppConfig.VertexAnthropicVersion,
 		"messages":          anthropicMessages,
 		"max_tokens":        maxTokens,
 		"stream":            true,

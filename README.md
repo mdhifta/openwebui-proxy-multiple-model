@@ -5,17 +5,19 @@ PORT=9090
 ```
 
 > **Note**
-> The proxy only supports port **9090**. If you want to change the port, make sure to update the `EXPOSE 9090` instruction in the Dockerfile as well.
+> The proxy only supports port 9090. If you want to change the port, make sure to update port in .env.
 
 ```env
 VERTEXAI_PROJECT={vertex-project-id}
 VERTEXAI_LOCATION={location}
+VERTEXAI_ANTHROPIC_VERSION={vertexai-anthropic-version}
 ```
 
 Example:
 
 - `global`
 - `us-central1`
+- `vertex-2023-10-16`
 
 ```env
 VERTEXAI_AVAILABLE_MODELS={model-list-vertex}

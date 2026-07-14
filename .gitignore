@@ -1,2 +1,3 @@
-.env
-credential-gcp.json
+/.env
+
+/cerdential-gcp.json
