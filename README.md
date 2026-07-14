@@ -10,6 +10,14 @@ PORT=9090
 ```env
 VERTEXAI_PROJECT={vertex-project-id}
 ```
+Example:
+
+- `my-project-4860`
+
+> **Note**
+> The Vertex Project ID can be obtained from Google Cloud Platform (GCP).
+
+
 ```env
 VERTEXAI_LOCATION={location}
 ```
