@@ -9,15 +9,22 @@ PORT=9090
 
 ```env
 VERTEXAI_PROJECT={vertex-project-id}
-VERTEXAI_LOCATION={location}
-VERTEXAI_ANTHROPIC_VERSION={vertexai-anthropic-version}
 ```
-
+```
+VERTEXAI_LOCATION={location}
+```
 Example:
 
 - `global`
 - `us-central1`
+
+```
+VERTEXAI_ANTHROPIC_VERSION={vertexai-anthropic-version}
+```
+Example:
+
 - `vertex-2023-10-16`
+
 
 ```env
 VERTEXAI_AVAILABLE_MODELS={model-list-vertex}
