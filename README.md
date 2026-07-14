@@ -10,7 +10,7 @@ PORT=9090
 ```env
 VERTEXAI_PROJECT={vertex-project-id}
 ```
-```
+```env
 VERTEXAI_LOCATION={location}
 ```
 Example:
@@ -18,7 +18,7 @@ Example:
 - `global`
 - `us-central1`
 
-```
+```env
 VERTEXAI_ANTHROPIC_VERSION={vertexai-anthropic-version}
 ```
 Example:
