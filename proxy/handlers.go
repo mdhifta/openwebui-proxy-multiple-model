@@ -24,13 +24,6 @@ func HandleModels(w http.ResponseWriter, r *http.Request) {
 	var allModels []models.Model
 
 	modelIDs := config.AppConfig.VertexAIAvailableModels
-	if len(modelIDs) == 0 {
-		modelIDs = []string{
-			"google/gemini-2.5-pro",
-			"google/gemini-2.5-flash",
-		}
-	}
-
 	for _, id := range modelIDs {
 		allModels = append(allModels, models.Model{
 			ID:      id,
