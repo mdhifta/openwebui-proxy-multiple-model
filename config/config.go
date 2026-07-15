@@ -1,7 +1,6 @@
 package config
 
 import (
-	"fmt"
 	"os"
 	"strings"
 
@@ -26,12 +25,6 @@ func LoadConfig() error {
 		logger.Logger.Debug("Warning: .env file not found, reading from system env instead")
 	}
 
-	location := os.Getenv("VERTEXAI_LOCATION")
-	projectID := os.Getenv("VERTEXAI_PROJECT")
-	if location == "" || projectID == "" {
-		return fmt.Errorf("VERTEXAI_LOCATION and VERTEXAI_PROJECT env vars must be set")
-	}
-
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "9090"
@@ -48,8 +41,8 @@ func LoadConfig() error {
 
 	AppConfig = &Config{
 		Port:                    port,
-		VertexAILocation:        location,
-		VertexAIProject:         projectID,
+		VertexAILocation:        os.Getenv("VERTEXAI_LOCATION"),
+		VertexAIProject:         os.Getenv("VERTEXAI_PROJECT"),
 		VertexAIAvailableModels: customModels,
 		VertexAnthropicVersion: os.Getenv("VERTEXAI_ANTHROPIC_VERSION"),
 		OpenAIAPIKey:            os.Getenv("OPENAI_API_KEY"),
